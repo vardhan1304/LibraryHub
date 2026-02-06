@@ -1,7 +1,9 @@
 package com.libraryhub.common.service;
 
 
+import com.libraryhub.common.request.CityRequest;
 import com.libraryhub.common.request.StateRequest;
+import com.libraryhub.common.response.CityResponse;
 import com.libraryhub.common.response.StateResponse;
 
 public interface CityStateService {
@@ -9,4 +11,6 @@ public interface CityStateService {
 
 
     StateResponse createState(StateRequest request);
+
+    CityResponse createCity(CityRequest request);
 }

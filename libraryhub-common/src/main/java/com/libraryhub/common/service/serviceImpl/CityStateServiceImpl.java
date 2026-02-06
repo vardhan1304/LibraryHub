@@ -1,7 +1,10 @@
 package com.libraryhub.common.service.serviceImpl;
 
+import com.libraryhub.common.entity.City;
 import com.libraryhub.common.entity.State;
+import com.libraryhub.common.repository.CityRepository;
 import com.libraryhub.common.repository.StateRepository;
+import com.libraryhub.common.request.CityRequest;
 import com.libraryhub.common.request.StateRequest;
 import com.libraryhub.common.response.CityResponse;
 import com.libraryhub.common.response.StateResponse;
@@ -17,6 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CityStateServiceImpl implements CityStateService {
     private final StateRepository stateRepository;
+    private final CityRepository cityRepository;
 
 
     @Override
@@ -62,6 +66,25 @@ public class CityStateServiceImpl implements CityStateService {
                 .code(savedState.getCode())
                 .status(savedState.getStatus())
                 .cities(null)
+                .build();
+    }
+
+    @Override
+    public CityResponse createCity(CityRequest request) {
+        State state = stateRepository.findById(request.getStateId())
+                .orElseThrow(() -> new RuntimeException("State not found"));
+
+        City city = new City();
+        city.setName(request.getName());
+        city.setState(state);
+
+        City savedCity = cityRepository.save(city);
+
+        return CityResponse.builder()
+                .cityId(savedCity.getCityId())
+                .name(savedCity.getName())
+                .stateId(state.getStateId())
+                .stateName(state.getName())
                 .build();
     }
 }

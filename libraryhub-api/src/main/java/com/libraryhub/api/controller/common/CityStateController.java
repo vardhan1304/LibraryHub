@@ -1,6 +1,8 @@
 package com.libraryhub.api.controller.common;
 
+import com.libraryhub.common.request.CityRequest;
 import com.libraryhub.common.request.StateRequest;
+import com.libraryhub.common.response.CityResponse;
 import com.libraryhub.common.response.StateResponse;
 import com.libraryhub.common.service.CityStateService;
 import lombok.RequiredArgsConstructor;
@@ -9,21 +11,28 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/city-state")
+@RequestMapping("/api/geolocator")
 @RequiredArgsConstructor
 public class CityStateController {
 
     private final CityStateService cityStateService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/state/{id}")
     public StateResponse getStateWithCities(@PathVariable Integer id) {
         return cityStateService.getStateWithCities(id);
     }
 
-    @PostMapping
+    @PostMapping("/add-state")
     public ResponseEntity<StateResponse> createState(@RequestBody StateRequest request) {
 
         StateResponse response = cityStateService.createState(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/add-city")
+    public ResponseEntity<CityResponse> addCity(@RequestBody CityRequest request) {
+
+        CityResponse response = cityStateService.createCity(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
