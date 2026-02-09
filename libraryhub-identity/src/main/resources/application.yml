@@ -1,0 +1,13 @@
+spring:
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/changelog.xml
+
+  jpa:
+    hibernate:
+      ddl-auto: validate   # VERY IMPORTANT
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
